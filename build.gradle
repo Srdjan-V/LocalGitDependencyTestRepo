@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.github.srdjanv'
+version = '0'
+
+repositories {
+}
+
+dependencies {
+}
