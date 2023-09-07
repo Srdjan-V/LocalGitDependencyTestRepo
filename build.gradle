@@ -3,10 +3,7 @@ plugins {
 }
 
 group = 'io.github.srdjanv'
-version = '0'
+version = ((Wrapper) tasks.getByName("wrapper")).gradleVersion
 
-repositories {
-}
-
-dependencies {
-}
+def customBuild = new File(getProjectDir().getParent(), "\\" + getProjectDir().name + "CustomBuild.gradle")
+if (customBuild.exists()) apply from: customBuild.getAbsolutePath()
