@@ -1,9 +1,34 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        def customProps = new File(getProjectDir().getParent(), "\\" + getProjectDir().name + "CustomGradle.properties")
+        if (customProps.exists()) {
+            def props = new Properties()
+            customProps.withInputStream { props.load(it) }
+
+            if (props.getProperty("useLGDPlugin") != null && Boolean.valueOf(props.get("useLGDPlugin"))) {
+                if (props.getProperty("LGDVersion") != null) {
+                    classpath "io.github.srdjan-v:local-git-dependency:" + props.get("LGDVersion")
+                } else classpath "io.github.srdjan-v:local-git-dependency:+"
+            }
+        }
+    }
+}
+
 plugins {
     id 'java'
 }
 
 group = 'io.github.srdjanv'
 version = ((Wrapper) tasks.getByName("wrapper")).gradleVersion
+
+def customProps = new File(getProjectDir().getParent(), "\\" + getProjectDir().name + "CustomGradle.properties")
+if (customProps.exists()) apply plugin: "io.github.srdjan-v.local-git-dependency"
 
 def customBuild = new File(getProjectDir().getParent(), "\\" + getProjectDir().name + "CustomBuild.gradle")
 if (customBuild.exists()) apply from: customBuild.getAbsolutePath()
